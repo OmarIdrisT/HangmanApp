@@ -1,8 +1,6 @@
-package com.example.hangmanapp
-
-sealed class GamePhase(val route: String) {
-    object Pantalla1:GamePhase("LaunchScreen")
-    object Pantalla2:GamePhase("MenuScreen")
-    object Pantalla3:GamePhase("GameScreen")
-    object Pantalla4:GamePhase("ResultScreen")
+sealed class Routes(val route: String) {
+    object LaunchScreen:Routes("LaunchScreen")
+    object MenuScreen:Routes("MenuScreen")
+    object GameScreen:Routes("GameScreen")
+    object ResultScreen:Routes("ResultScreen")
 }

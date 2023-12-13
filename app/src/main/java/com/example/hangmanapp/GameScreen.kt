@@ -1,5 +1,3 @@
-package com.example.hangmanapp
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,11 +12,11 @@ import androidx.navigation.NavController
 @Composable
 fun GameScreen(navController: NavController) {
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.Green)) {
+        modifier = Modifier.fillMaxSize().background(Color.Blue)) {
         Text(
-            text = "Pantalla 3",
+            text = "Pantalla 1",
             modifier = Modifier
                 .align(Alignment.Center)
-                .clickable { navController.navigate(GamePhase.Pantalla4.route) })
+                .clickable { navController.navigate(Routes.ResultScreen.route) })
     }
 }

@@ -1,5 +1,3 @@
-package com.example.hangmanapp
-
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -19,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.hangmanapp.R
 import kotlinx.coroutines.delay
 
 @Composable
@@ -39,15 +38,16 @@ fun LaunchScreen(navController: NavController) {
     var startAnimation by remember { mutableStateOf(false) }
     val alphaAnim = animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(durationMillis = 3000)
+        animationSpec = tween(durationMillis = 3000), label = ""
     )
     LaunchedEffect(key1 = true) {
         startAnimation = true
         delay(4000)
         navController.popBackStack()
-        navController.navigate(GamePhase.Pantalla2.route)
+        navController.navigate(Routes.MenuScreen.route)
     }
     Splash(alphaAnim.value)
 }
+
 
 
