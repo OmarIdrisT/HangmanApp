@@ -14,9 +14,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.hangmanapp.ui.theme.HangmanAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,7 +38,12 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(Routes.LaunchScreen.route) { LaunchScreen(navigationController) }
                         composable(Routes.MenuScreen.route) { MenuScreen(navigationController) }
-                        composable(Routes.GameScreen.route) { GameScreen(navigationController)}
+                        composable(
+                            Routes.GameScreen.route,
+                            arguments= listOf(navArgument("dificultatEscollida") {type = NavType.StringType})
+                        ) { backStackEntry ->
+                            GameScreen(navigationController, backStackEntry.arguments?.getString("dificultatEscollida") ?: "Hola")
+                        }
                         composable(Routes.ResultScreen.route) {ResultScreen(navigationController)}
                     }
                 }

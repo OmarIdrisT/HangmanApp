@@ -50,7 +50,7 @@ fun MenuScreen(navController: NavController) {
         Button(
             modifier = Modifier
                 .width(200.dp),
-            onClick = {(navController.navigate(Routes.GameScreen.route))}
+            onClick = {(navController.navigate(Routes.GameScreen.createRoute("Hola")))}
         ) {
                 Text(text = "Play", style = TextStyle(color = Color.White))
         }
