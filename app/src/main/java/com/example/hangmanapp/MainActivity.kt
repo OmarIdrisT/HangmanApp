@@ -1,9 +1,10 @@
 package com.example.hangmanapp
 
+import GameScreen
 import LaunchScreen
 import MenuScreen
-import GameScreen
 import ResultScreen
+import Routes
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
