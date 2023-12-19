@@ -25,7 +25,7 @@ import com.example.hangmanapp.R
 @Composable
 fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var intentsAverage by remember { mutableStateOf(6) }
-    var paraulesEasy = listOf("HOME","DICE", "CLOUD", "ROCK", "BRICK", "DAY", "ROSE", "JET", "MIC", "DOG")
+    var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
     var paraulesMedium = listOf("HOME","DICE", "", "", "", "", "", "", "", "")
     var paraulesHard = listOf("ATLANTIS","", "", "", "", "", "", "", "", "")
     var paraulesInsanity = listOf("","", "", "", "", "", "", "", "", "")
@@ -34,16 +34,20 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var inici = 0
     var final = 5
     var abecedari = listOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z")
-    Column(modifier = Modifier.fillMaxSize().background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(id = R.drawable.logo), contentDescription = null)
-        if (dificultatEscollida == "Easy") {
+
+
             Text(text = "EASY")
             paraulaEscollida = paraulesEasy.random()
-            for (i in 0 .. paraulaEscollida.length) {
-                paraulaSecreta += "_"
+            for (i in paraulaEscollida.indices) {
+                paraulaSecreta += "_ "
             }
-            Text(text = paraulaSecreta)
-        }
+            Text(text = paraulaSecreta.trim(), style = TextStyle(fontSize = 30.sp, color = Color.Black))
+
+
         repeat (intentsAverage) {
             Row() {
                 for (i in inici .. final) {
