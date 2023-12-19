@@ -1,4 +1,5 @@
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,28 +14,44 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.hangmanapp.R
 
 @Composable
 fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var intentsAverage by remember { mutableStateOf(6) }
+    var paraulesEasy = listOf("HOME","DICE", "CLOUD", "ROCK", "BRICK", "DAY", "ROSE", "JET", "MIC", "DOG")
+    var paraulesMedium = listOf("HOME","DICE", "", "", "", "", "", "", "", "")
+    var paraulesHard = listOf("ATLANTIS","", "", "", "", "", "", "", "", "")
+    var paraulesInsanity = listOf("","", "", "", "", "", "", "", "", "")
+    var paraulaEscollida = ""
+    var paraulaSecreta = ""
     var inici = 0
     var final = 5
     var abecedari = listOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z")
-    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    Column(modifier = Modifier.fillMaxSize().background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(id = R.drawable.logo), contentDescription = null)
-
-        repeat (6) {
+        if (dificultatEscollida = "Easy") {
+            Text(text = "EASY")
+            paraulaEscollida = paraulesEasy.random()
+            for (i in 0 .. paraulaEscollida.length) {
+                paraulaSecreta += "_"
+            }
+            Text(text = paraulaSecreta)
+        }
+        repeat (intentsAverage) {
             Row() {
                 for (i in inici .. final) {
                     Button(
                         modifier = Modifier.size(55.dp),
                         onClick = { }
                     ) {
-                        Text(text = abecedari[i])
+                        Text(text = abecedari[i], style = TextStyle(fontSize = 15.sp))
                     }
                 }
                 inici = final + 1

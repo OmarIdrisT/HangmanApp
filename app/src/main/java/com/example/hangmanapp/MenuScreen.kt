@@ -108,8 +108,10 @@ fun MyDialog(help: Boolean, onDismiss: () -> Unit, function: () -> Unit){
     if(help){
         Dialog(onDismissRequest = { onDismiss() }) {
             Column(
-                Modifier.background(Color.White)
-                    .padding(24.dp).fillMaxWidth()) {
+                Modifier
+                    .background(Color.White)
+                    .padding(24.dp)
+                    .fillMaxWidth()) {
                 Text(text = "This is my dialog", color = Color.Black)
             }
         }
