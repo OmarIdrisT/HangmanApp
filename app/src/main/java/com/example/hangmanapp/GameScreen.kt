@@ -36,7 +36,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var abecedari = listOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z")
     Column(modifier = Modifier.fillMaxSize().background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(id = R.drawable.logo), contentDescription = null)
-        if (dificultatEscollida = "Easy") {
+        if (dificultatEscollida == "Easy") {
             Text(text = "EASY")
             paraulaEscollida = paraulesEasy.random()
             for (i in 0 .. paraulaEscollida.length) {
