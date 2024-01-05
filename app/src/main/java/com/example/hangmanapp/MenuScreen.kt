@@ -35,6 +35,8 @@ import com.example.hangmanapp.R
 
 @Composable
 fun MenuScreen(navController: NavController) {
+    val dificultatEscollida = myDropDownMenu()
+
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -49,7 +51,7 @@ fun MenuScreen(navController: NavController) {
         Button(
             modifier = Modifier
                 .width(200.dp),
-            onClick = {(navController.navigate(Routes.GameScreen.createRoute("Hola")))}
+            onClick = {(navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida)))}
         ) {
                 Text(text = "Play", style = TextStyle(color = Color.White))
         }

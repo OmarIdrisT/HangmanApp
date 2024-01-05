@@ -24,7 +24,7 @@ import com.example.hangmanapp.R
 
 @Composable
 fun GameScreen(navController: NavController, dificultatEscollida : String) {
-    var intentsAverage by remember { mutableStateOf(6) }
+    var tries = 0
     var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
     var paraulesMedium = listOf("HOME","DICE", "", "", "", "", "", "", "", "")
     var paraulesHard = listOf("ATLANTIS","", "", "", "", "", "", "", "", "")
@@ -54,7 +54,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                             Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
 
             "Hard" ->  {    Text(text = "EASY")
-                            paraulaEscollida = paraulesEasy.random()
+                            paraulaEscollida = paraulesHard.random()
                             for (i in paraulaEscollida.indices) {
                             paraulaSecreta += "_"
                             }
@@ -63,10 +63,24 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
 
             Row() {
                 for (i in inici..final) {
+                    var buttonEnabled by remember { mutableStateOf(true) }
                     val tecla = abecedari[i]
                     var lletraValida = false
                     Button(
-                        modifier = Modifier.size(55.dp),
+                        modifier = Modifier.size(55.dp).background(
+                            if (buttonEnabled) {
+                                Color.White
+                            }
+                            else {
+                                if (lletraValida) {
+                                    Color.Green
+                                }
+                                else {
+                                    Color.Red
+                                }
+                            }
+                        ),
+                        enabled = true,
                         onClick = {
                             for (j in 0 until paraulaSecreta.length) {
                                 if (paraulaEscollida[j] == tecla) {
@@ -74,6 +88,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                                     lletraValida = true
                                 }
                             }
+                            buttonEnabled = false
                         }
                     ) {
                         Text(text = tecla, style = TextStyle(fontSize = 15.sp))
