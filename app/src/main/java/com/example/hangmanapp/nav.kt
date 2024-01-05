@@ -5,4 +5,5 @@ sealed class Routes(val route: String) {
         fun createRoute(dificultatEscollida:String) = "GameScreen/$dificultatEscollida"
     }
     object ResultScreen:Routes("ResultScreen")
+        fun createRoute(victoria:Boolean, tries:Int) = "ResultScreen/$victoria/$tries"
 }

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -71,7 +70,7 @@ fun MenuScreen(navController: NavController) {
 fun myDropDownMenu(): String {
     var dificultatEscollida by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-    val opcions = listOf("Easy", "Normal", "Hard", "Insanity")
+    val opcions = listOf("Easy", "Normal", "Hard")
 
     Column (modifier = Modifier.padding(20.dp)) {
         OutlinedTextField(

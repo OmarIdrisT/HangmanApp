@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 
 @Composable
-fun ResultScreen(navController: NavController) {
+fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int) {
     Box(
         modifier = Modifier.fillMaxSize().background(Color.Red)) {
         Text(

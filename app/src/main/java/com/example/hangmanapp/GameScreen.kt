@@ -28,45 +28,64 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
     var paraulesMedium = listOf("HOME","DICE", "", "", "", "", "", "", "", "")
     var paraulesHard = listOf("ATLANTIS","", "", "", "", "", "", "", "", "")
-    var paraulesInsanity = listOf("","", "", "", "", "", "", "", "", "")
     var paraulaEscollida = ""
     var paraulaSecreta = ""
     var inici = 0
     var final = 5
-    var abecedari = listOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z")
+    var abecedari = listOf('A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z')
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(id = R.drawable.logo), contentDescription = null)
 
+        when (dificultatEscollida) {
+            "Easy" ->   {   Text(text = "EASY")
+                            paraulaEscollida = paraulesEasy.random()
+                            for (i in paraulaEscollida.indices) {
+                                paraulaSecreta += "_"
+                            }
+                            Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
 
-            Text(text = "EASY")
-            paraulaEscollida = paraulesEasy.random()
-            for (i in paraulaEscollida.indices) {
-                paraulaSecreta += "_ "
-            }
-            Text(text = paraulaSecreta.trim(), style = TextStyle(fontSize = 30.sp, color = Color.Black))
+            "Normal" -> {   Text(text = "EASY")
+                            paraulaEscollida = paraulesMedium.random()
+                            for (i in paraulaEscollida.indices) {
+                            paraulaSecreta += "_"
+                            }
+                            Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
 
+            "Hard" ->  {    Text(text = "EASY")
+                            paraulaEscollida = paraulesEasy.random()
+                            for (i in paraulaEscollida.indices) {
+                            paraulaSecreta += "_"
+                            }
+                            Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
+        }
 
-        repeat (intentsAverage) {
             Row() {
-                for (i in inici .. final) {
+                for (i in inici..final) {
+                    val tecla = abecedari[i]
+                    var lletraValida = false
                     Button(
                         modifier = Modifier.size(55.dp),
-                        onClick = { }
+                        onClick = {
+                            for (j in 0 until paraulaSecreta.length) {
+                                if (paraulaEscollida[j] == tecla) {
+                                    paraulaSecreta[j] = tecla
+                                    lletraValida = true
+                                }
+                            }
+                        }
                     ) {
-                        Text(text = abecedari[i], style = TextStyle(fontSize = 15.sp))
+                        Text(text = tecla, style = TextStyle(fontSize = 15.sp))
                     }
                 }
                 inici = final + 1
-                if (final+5< abecedari.size - 1){
+                if (final + 5 < abecedari.size - 1) {
                     final += 6
-                }else{
-                    final=abecedari.lastIndex
+                } else {
+                    final = abecedari.lastIndex
                 }
-
             }
-        }
 
     }
 }

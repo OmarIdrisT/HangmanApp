@@ -40,11 +40,23 @@ class MainActivity : ComponentActivity() {
                         composable(Routes.MenuScreen.route) { MenuScreen(navigationController) }
                         composable(
                             Routes.GameScreen.route,
-                            arguments= listOf(navArgument("dificultatEscollida") {type = NavType.StringType})
+                            arguments = listOf(navArgument("dificultatEscollida") {type = NavType.StringType})
                         ) { backStackEntry ->
-                            GameScreen(navigationController, backStackEntry.arguments?.getString("dificultatEscollida") ?: "Hola")
+                            GameScreen(
+                                navigationController,
+                                backStackEntry.arguments?.getString("dificultatEscollida") ?: "Hola"
+                            )
                         }
-                        composable(Routes.ResultScreen.route) {ResultScreen(navigationController)}
+                        composable(
+                            Routes.ResultScreen.route,
+                            arguments = listOf(navArgument("victoria") {type = NavType.BoolType}, navArgument("tries") {type = NavType.IntType})
+                        ) {backStackEntry ->
+                            ResultScreen(
+                                navigationController,
+                                backStackEntry.arguments?.getBoolean("victoria") ?: false,
+                                backStackEntry.arguments?.getInt("tries") ?: 0
+                            )
+                        }
                     }
                 }
             }
