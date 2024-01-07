@@ -2,6 +2,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,12 +12,27 @@ import androidx.navigation.NavController
 
 @Composable
 fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int) {
+
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.Red)) {
-        Text(
-            text = "Pantalla 1",
-            modifier = Modifier
-                .align(Alignment.Center)
-                .clickable { navController.navigate(Routes.MenuScreen.route) })
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.DarkGray)) {
+        if (victoria) {
+            Text(
+                text = "YOU WIN \nTries: $tries",
+                modifier = Modifier
+                    .align(Alignment.Center)
+            )
+        }
+        else {
+            Text(
+                text = "YOU LOSE",
+                modifier = Modifier
+                    .align(Alignment.Center))
+        }
+
+        Button(onClick = { navController.navigate(Routes.MenuScreen.route) }) {
+            Text(text = "PLAY AGAIN")
+        }
     }
 }

@@ -24,7 +24,17 @@ import com.example.hangmanapp.R
 
 @Composable
 fun GameScreen(navController: NavController, dificultatEscollida : String) {
+
     var tries by remember { mutableStateOf(0) }
+    var gamePhase = when(tries) {
+        0 -> R.drawable.logo
+        1 -> R.drawable.logo
+        2 -> R.drawable.logo
+        3 -> R.drawable.logo
+        4 -> R.drawable.logo
+        5 -> R.drawable.logo
+        else -> {2}
+    }
     var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
     var paraulesMedium = listOf("HOME","DICE", "", "", "", "", "", "", "", "")
     var paraulesHard = listOf("ATLANTIS","", "", "", "", "", "", "", "", "")
@@ -38,7 +48,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Image(painter = painterResource(id = R.drawable.logo), contentDescription = null)
+        Image(painter = painterResource(id = gamePhase), contentDescription = null)
 
         when (dificultatEscollida) {
             "Easy" ->   {   Text(text = "EASY")
