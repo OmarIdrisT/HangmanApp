@@ -24,15 +24,17 @@ import com.example.hangmanapp.R
 
 @Composable
 fun GameScreen(navController: NavController, dificultatEscollida : String) {
-    var tries = 0
+    var tries by remember { mutableStateOf(0) }
     var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
     var paraulesMedium = listOf("HOME","DICE", "", "", "", "", "", "", "", "")
     var paraulesHard = listOf("ATLANTIS","", "", "", "", "", "", "", "", "")
+    var victoria by remember { mutableStateOf(false) }
     var paraulaEscollida = ""
     var paraulaSecreta = ""
     var inici = 0
     var final = 5
-    var abecedari = listOf('A','B','C','D','E','F','G','H','I','J','K','L','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z')
+    var abecedari = listOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z")
+
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -65,30 +67,38 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                 for (i in inici..final) {
                     var buttonEnabled by remember { mutableStateOf(true) }
                     val tecla = abecedari[i]
-                    var lletraValida = false
+                    var lletraValida by remember { mutableStateOf(false) }
                     Button(
-                        modifier = Modifier.size(55.dp).background(
-                            if (buttonEnabled) {
-                                Color.White
-                            }
-                            else {
-                                if (lletraValida) {
-                                    Color.Green
+                        modifier = Modifier
+                            .size(55.dp)
+                            .background(
+                                if (buttonEnabled) {
+                                    Color.White
+                                } else {
+                                    if (lletraValida) {
+                                        Color.Green
+                                    } else {
+                                        Color.Red
+                                    }
                                 }
-                                else {
-                                    Color.Red
-                                }
-                            }
-                        ),
+                            ),
                         enabled = true,
                         onClick = {
                             for (j in 0 until paraulaSecreta.length) {
-                                if (paraulaEscollida[j] == tecla) {
-                                    paraulaSecreta[j] = tecla
+                                if (paraulaEscollida[j].toString() == tecla) {
+                                    paraulaSecreta = paraulaSecreta.substring(0, j) + tecla + paraulaSecreta.substring(j + 1)
                                     lletraValida = true
                                 }
                             }
+                            if (!lletraValida) {
+                                tries++
+                            }
                             buttonEnabled = false
+
+
+                            if (tries == 6 || paraulaSecreta == paraulaEscollida) {
+                                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
+                            }
                         }
                     ) {
                         Text(text = tecla, style = TextStyle(fontSize = 15.sp))
@@ -101,6 +111,5 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                     final = abecedari.lastIndex
                 }
             }
-
     }
 }
