@@ -69,7 +69,7 @@ fun MenuScreen(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun myDropDownMenu(): String {
-    var dificultatGame by remember { mutableStateOf("") }
+    var dificultatGame by remember { mutableStateOf("Easy") }
     var expanded by remember { mutableStateOf(false) }
     val opcions = listOf("Easy", "Normal", "Hard")
 

@@ -1,6 +1,8 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,90 +37,54 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
         5 -> R.drawable.logo
         else -> {R.drawable.logo}
     }
+
     var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
     var paraulesMedium = listOf("HOME", "WORD1", "WORD2", "WORD3", "WORD4", "WORD5", "WORD6", "WORD7", "WORD8", "WORD9")
     var paraulesHard = listOf("ATLANTIS", "WORD1", "WORD2", "WORD3", "WORD4", "WORD5", "WORD6", "WORD7", "WORD8", "WORD9")
-    var victoria by remember { mutableStateOf(false) }
-    var paraulaEscollida by remember { mutableStateOf("") }
+    var palabrasJugando =when(dificultatEscollida){
+        "Easy"->paraulesEasy
+        "Normal"->paraulesEasy
+        else->paraulesHard
+    }
+    var victoria=false
+    var paraulaRandom by remember { mutableStateOf((palabrasJugando.indices).random())  }
+    var paraulaEscollida by remember { mutableStateOf(palabrasJugando[paraulaRandom]) }
     var inici = 0
     var final = 5
-    var abecedari = listOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z")
+    var abecedari = listOf('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
 
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(id = gamePhase), contentDescription = null)
+        var paraulaSecreta by remember { mutableStateOf("_".repeat(paraulaEscollida.length)) }
+        var nuevaParaulaSecreta=paraulaSecreta.toCharArray()
+        Text(text = paraulaSecreta, letterSpacing = 5.sp, style = TextStyle(fontSize = 30.sp, color = Color.Black))
 
-        when (dificultatEscollida) {
-            "Easy" -> {
-                Text(text = "EASY")
-                paraulaEscollida = paraulesEasy.random()
-            }
-
-            "Normal" -> {
-                Text(text = "NORMAL")
-                paraulaEscollida = paraulesMedium.random()
-            }
-
-            "Hard" -> {
-                Text(text = "HARD")
-                paraulaEscollida = paraulesHard.random()
-            }
-
-        }
-        var paraulaSecreta by remember { mutableStateOf(paraulaEscollida.map { "_" }.joinToString(" ")) }
-        Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))
-
-        repeat(4) {
+        repeat(6) {
             Row() {
 
                 for (i in inici..final) {
-                    var buttonEnabled by remember { mutableStateOf(true) }
                     val tecla = abecedari[i]
-                    var lletraValida by remember { mutableStateOf(false) }
-                    Button(
+                    var colorBoton by remember { mutableStateOf(Color.White) }
+                    Box(
                         modifier = Modifier
                             .size(55.dp)
-                            .background(
-                                if (buttonEnabled) {
-                                    Color.White
-                                } else {
-                                    if (lletraValida) {
-                                        Color.Green
+                            .background(colorBoton)
+                            .clickable {
+                                for (j in paraulaEscollida.indices) {
+                                    if (paraulaEscollida[j] == tecla) {
+                                        colorBoton = Color.Green
+                                        nuevaParaulaSecreta[j] = tecla
                                     } else {
-                                        Color.Red
+                                        colorBoton = Color.Red
+                                        tries++
                                     }
                                 }
-                            ),
-                        enabled = buttonEnabled,
-                        onClick = {
-                            var updatedParaulaSecreta = paraulaSecreta
-                            for (j in 0 until paraulaEscollida.length) {
-                                if (paraulaEscollida[j].equals(tecla)) {
-                                    updatedParaulaSecreta = updatedParaulaSecreta.substring(0, j) + tecla + updatedParaulaSecreta.substring(j + 1)
-                                }
+                                paraulaSecreta = String(nuevaParaulaSecreta)
                             }
-                            if (updatedParaulaSecreta != paraulaSecreta) {
-                                lletraValida = true
-                            }
-                            paraulaSecreta = updatedParaulaSecreta
-                            if (!lletraValida) {
-                                tries++
-                            }
-                            buttonEnabled = false
-
-                            if (tries == 6) {
-                                victoria = false
-                                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
-                            }
-                            else if (paraulaSecreta == paraulaEscollida) {
-                                victoria = true
-                                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
-                            }
-
-                        }
                     ) {
-                        Text(text = tecla, style = TextStyle(fontSize = 15.sp))
+                        Text(text = tecla.toString(), style = TextStyle(fontSize = 15.sp))
                       }
                 }
                 inici = final + 1
@@ -128,6 +94,13 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                     final = abecedari.lastIndex
                 }
             }
+        }
+        if (tries == 6) {
+            navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
+        }
+        else if (paraulaSecreta == paraulaEscollida) {
+            victoria = true
+            navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
         }
     }
 }
