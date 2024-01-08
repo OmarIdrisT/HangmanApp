@@ -36,11 +36,10 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
         else -> {R.drawable.logo}
     }
     var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
-    var paraulesMedium = listOf("HOME","DICE", "", "", "", "", "", "", "", "")
-    var paraulesHard = listOf("ATLANTIS","", "", "", "", "", "", "", "", "")
+    var paraulesMedium = listOf("HOME", "WORD1", "WORD2", "WORD3", "WORD4", "WORD5", "WORD6", "WORD7", "WORD8", "WORD9")
+    var paraulesHard = listOf("ATLANTIS", "WORD1", "WORD2", "WORD3", "WORD4", "WORD5", "WORD6", "WORD7", "WORD8", "WORD9")
     var victoria by remember { mutableStateOf(false) }
-    var paraulaEscollida = ""
-    var paraulaSecreta = ""
+    var paraulaEscollida by remember { mutableStateOf("") }
     var inici = 0
     var final = 5
     var abecedari = listOf("A","B","C","D","E","F","G","H","I","J","K","L","M","N","Ñ","O","P","Q","R","S","T","U","V","W","X","Y","Z")
@@ -51,27 +50,25 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
         Image(painter = painterResource(id = gamePhase), contentDescription = null)
 
         when (dificultatEscollida) {
-            "Easy" ->   {   Text(text = "EASY")
-                            paraulaEscollida = paraulesEasy.random()
-                            for (i in paraulaEscollida.indices) {
-                                paraulaSecreta += "_"
-                            }
-                            Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
+            "Easy" -> {
+                Text(text = "EASY")
+                paraulaEscollida = paraulesEasy.random()
+            }
 
-            "Normal" -> {   Text(text = "NORMAL")
-                            paraulaEscollida = paraulesMedium.random()
-                            for (i in paraulaEscollida.indices) {
-                            paraulaSecreta += "_"
-                            }
-                            Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
+            "Normal" -> {
+                Text(text = "NORMAL")
+                paraulaEscollida = paraulesMedium.random()
+            }
 
-            "Hard" ->  {    Text(text = "HARD")
-                            paraulaEscollida = paraulesHard.random()
-                            for (i in paraulaEscollida.indices) {
-                            paraulaSecreta += "_"
-                            }
-                            Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
+            "Hard" -> {
+                Text(text = "HARD")
+                paraulaEscollida = paraulesHard.random()
+            }
+
         }
+        var paraulaSecreta by remember { mutableStateOf(paraulaEscollida.map { "_" }.joinToString(" ")) }
+        Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))
+
         repeat(4) {
             Row() {
 
@@ -95,24 +92,34 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                             ),
                         enabled = buttonEnabled,
                         onClick = {
-                            for (j in 0 until paraulaSecreta.length) {
-                                if (paraulaEscollida[j].toString() == tecla) {
-                                    paraulaSecreta = paraulaSecreta.substring(0, j) + tecla + paraulaSecreta.substring(j + 1)
-                                    lletraValida = true
+                            var updatedParaulaSecreta = paraulaSecreta
+                            for (j in 0 until paraulaEscollida.length) {
+                                if (paraulaEscollida[j].equals(tecla)) {
+                                    updatedParaulaSecreta = updatedParaulaSecreta.substring(0, j) + tecla + updatedParaulaSecreta.substring(j + 1)
                                 }
                             }
+                            if (updatedParaulaSecreta != paraulaSecreta) {
+                                lletraValida = true
+                            }
+                            paraulaSecreta = updatedParaulaSecreta
                             if (!lletraValida) {
                                 tries++
                             }
                             buttonEnabled = false
 
-                            if (tries == 6 || paraulaSecreta == paraulaEscollida) {
+                            if (tries == 6) {
+                                victoria = false
                                 navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
                             }
+                            else if (paraulaSecreta == paraulaEscollida) {
+                                victoria = true
+                                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
+                            }
+
                         }
                     ) {
                         Text(text = tecla, style = TextStyle(fontSize = 15.sp))
-                    }
+                      }
                 }
                 inici = final + 1
                 if (final + 5 < abecedari.size - 1) {
@@ -124,3 +131,5 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
         }
     }
 }
+
+
