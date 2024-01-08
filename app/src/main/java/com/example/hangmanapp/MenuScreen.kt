@@ -35,7 +35,6 @@ import com.example.hangmanapp.R
 
 @Composable
 fun MenuScreen(navController: NavController) {
-    val dificultatEscollida = myDropDownMenu()
 
     Column (
         modifier = Modifier
@@ -46,7 +45,7 @@ fun MenuScreen(navController: NavController) {
     ) {
         Image(painter = painterResource(id = R.drawable.logo), contentDescription = "portada", modifier = Modifier.size(200.dp))
         Spacer(modifier = Modifier.height(30.dp))
-        val diffMenu = myDropDownMenu()
+        val dificultatEscollida = myDropDownMenu()
         Spacer(modifier = Modifier.height(30.dp))
         Button(
             modifier = Modifier
@@ -70,14 +69,14 @@ fun MenuScreen(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun myDropDownMenu(): String {
-    var dificultatEscollida by remember { mutableStateOf("") }
+    var dificultatGame by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
     val opcions = listOf("Easy", "Normal", "Hard")
 
     Column (modifier = Modifier.padding(20.dp)) {
         OutlinedTextField(
-            value = dificultatEscollida,
-            onValueChange = { dificultatEscollida = it },
+            value = dificultatGame,
+            onValueChange = { dificultatGame = it },
             enabled = false,
             readOnly = true,
             colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.Red),
@@ -95,13 +94,13 @@ fun myDropDownMenu(): String {
             opcions.forEach { dificultat ->
                 DropdownMenuItem(modifier = Modifier.background(color = Color.White) ,text = { Text(text = dificultat, style = TextStyle(color = Color.Blue)) }, onClick = {
                     expanded = false
-                    dificultatEscollida = dificultat
+                    dificultatGame = dificultat
                 })
             }
         }
     }
 
-    return dificultatEscollida
+    return dificultatGame
 }
 
 @Composable

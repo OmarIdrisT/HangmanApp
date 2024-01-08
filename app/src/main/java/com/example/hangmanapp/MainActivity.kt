@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                         ) { backStackEntry ->
                             GameScreen(
                                 navigationController,
-                                backStackEntry.arguments?.getString("dificultatEscollida") ?: "Hola"
+                                backStackEntry.arguments?.getString("dificultatEscollida") ?: "Easy"
                             )
                         }
                         composable(

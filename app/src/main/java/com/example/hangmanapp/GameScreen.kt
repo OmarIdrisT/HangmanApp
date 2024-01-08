@@ -33,7 +33,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
         3 -> R.drawable.logo
         4 -> R.drawable.logo
         5 -> R.drawable.logo
-        else -> {2}
+        else -> {R.drawable.logo}
     }
     var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
     var paraulesMedium = listOf("HOME","DICE", "", "", "", "", "", "", "", "")
@@ -58,22 +58,23 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                             }
                             Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
 
-            "Normal" -> {   Text(text = "EASY")
+            "Normal" -> {   Text(text = "NORMAL")
                             paraulaEscollida = paraulesMedium.random()
                             for (i in paraulaEscollida.indices) {
                             paraulaSecreta += "_"
                             }
                             Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
 
-            "Hard" ->  {    Text(text = "EASY")
+            "Hard" ->  {    Text(text = "HARD")
                             paraulaEscollida = paraulesHard.random()
                             for (i in paraulaEscollida.indices) {
                             paraulaSecreta += "_"
                             }
                             Text(text = paraulaSecreta, style = TextStyle(fontSize = 30.sp, color = Color.Black))}
         }
-
+        repeat(4) {
             Row() {
+
                 for (i in inici..final) {
                     var buttonEnabled by remember { mutableStateOf(true) }
                     val tecla = abecedari[i]
@@ -92,7 +93,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                                     }
                                 }
                             ),
-                        enabled = true,
+                        enabled = buttonEnabled,
                         onClick = {
                             for (j in 0 until paraulaSecreta.length) {
                                 if (paraulaEscollida[j].toString() == tecla) {
@@ -104,7 +105,6 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                                 tries++
                             }
                             buttonEnabled = false
-
 
                             if (tries == 6 || paraulaSecreta == paraulaEscollida) {
                                 navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
@@ -121,5 +121,6 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                     final = abecedari.lastIndex
                 }
             }
+        }
     }
 }
