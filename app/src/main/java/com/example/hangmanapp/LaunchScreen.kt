@@ -24,10 +24,11 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun Splash(alphaAnim: Float) {
-    Column(modifier = Modifier.fillMaxSize().background(color = Color.Red),
+    Column(modifier = Modifier.fillMaxSize().background(color = Color.DarkGray),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Image(painter = painterResource(id = R.drawable.fondo ), contentDescription = "Fons", modifier = Modifier.fillMaxSize())
         Image(painter = painterResource(id = R.drawable.logo),
             contentDescription = "logo", alpha = alphaAnim
         )

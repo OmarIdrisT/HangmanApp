@@ -43,6 +43,7 @@ fun MenuScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Image(painter = painterResource(id = R.drawable.fondo ), contentDescription = "Fons", modifier = Modifier.fillMaxSize())
         Image(painter = painterResource(id = R.drawable.logo), contentDescription = "portada", modifier = Modifier.size(200.dp))
         Spacer(modifier = Modifier.height(30.dp))
         val dificultatEscollida = myDropDownMenu()
@@ -62,7 +63,6 @@ fun MenuScreen(navController: NavController) {
                 Text(text = "Help", style = TextStyle(color = Color.White))
         }
         MyDialog(help, { help = false }) { help = false }
-
     }
 }
 

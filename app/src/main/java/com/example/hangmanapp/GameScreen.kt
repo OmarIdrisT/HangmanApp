@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -29,13 +30,13 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
 
     var tries by remember { mutableStateOf(0) }
     var gamePhase = when(tries) {
-        0 -> R.drawable.logo
-        1 -> R.drawable.logo
-        2 -> R.drawable.logo
-        3 -> R.drawable.logo
-        4 -> R.drawable.logo
-        5 -> R.drawable.logo
-        else -> {R.drawable.logo}
+        0 -> R.drawable.step0
+        1 -> R.drawable.step1
+        2 -> R.drawable.step2
+        3 -> R.drawable.step3
+        4 -> R.drawable.step4
+        5 -> R.drawable.step5
+        else -> {R.drawable.step6}
     }
 
     var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
@@ -56,6 +57,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Image(painter = painterResource(id = R.drawable.fondo ), contentDescription = "Fons", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
         Image(painter = painterResource(id = gamePhase), contentDescription = null)
         var paraulaSecreta by remember { mutableStateOf("_".repeat(paraulaEscollida.length)) }
         var nuevaParaulaSecreta=paraulaSecreta.toCharArray()
