@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,41 +19,43 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.hangmanapp.R
 
 
-var colorBotoEncert = Color(0xff0db121)
+val colorBotoEncert = Color(0xff0db121)
 val colorBotoFals = Color(0xffd32c2c)
+val colorPredeterminat = Color(0xff2f9ac5)
 
 @Composable
 fun GameScreen(navController: NavController, dificultatEscollida : String) {
 
     var tries by remember { mutableStateOf(0) }
-    var gamePhase = when(tries) {
-        0 -> R.drawable.step0
-        1 -> R.drawable.step1
-        2 -> R.drawable.step2
-        3 -> R.drawable.step3
-        4 -> R.drawable.step4
-        5 -> R.drawable.step5
-        else -> {R.drawable.step6}
+    var errors by remember { mutableStateOf(0) }
+    var gamePhase = when(errors) {
+        0 -> R.drawable.step0w
+        1 -> R.drawable.step1w
+        2 -> R.drawable.step2w
+        3 -> R.drawable.step3w
+        4 -> R.drawable.step4w
+        5 -> R.drawable.step5w
+        else -> R.drawable.step6w
     }
 
-    var paraulesEasy = listOf("HOME","DICE", "ROSE", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
-    var paraulesMedium = listOf("HOME", "WORD1", "WORD2", "WORD3", "WORD4", "WORD5", "WORD6", "WORD7", "WORD8", "WORD9")
-    var paraulesHard = listOf("ATLANTIS", "WORD1", "WORD2", "WORD3", "WORD4", "WORD5", "WORD6", "WORD7", "WORD8", "WORD9")
+    var paraulesEasy = listOf("ROSA","HIELO", "LUZ", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
+    var paraulesMedium = listOf("HOME", "WORD1", "WORD2", "WORD3", "WORD4", "WORD5", "WORD6", "WORD7", "ATLANTIS", "LUGUBRE")
+    var paraulesHard = listOf("APOCALIPSIS", "LICANTROPO", "PERIPECIA", "PAUPERRIMO", "LOGARITMO", "CONOCIMIENTO", "ATARAXIA", "TURBULENCIA", "MURCIELAGO", "ATLANTIS")
     var palabrasJugando =when(dificultatEscollida){
         "Easy"->paraulesEasy
-        "Normal"->paraulesEasy
+        "Normal"->paraulesMedium
         else->paraulesHard
     }
     var victoria=false
@@ -75,25 +77,32 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
             .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
-
-            Image(painter = painterResource(id = gamePhase), contentDescription = null)
             var paraulaSecreta by remember { mutableStateOf("_".repeat(paraulaEscollida.length)) }
             var nuevaParaulaSecreta=paraulaSecreta.toCharArray()
-            Text(text = paraulaSecreta, letterSpacing = 5.sp, style = TextStyle(fontSize = 50.sp, color = Color.Black))
+            Text(text = paraulaSecreta,
+                 letterSpacing = 5.sp,
+                 style = TextStyle(fontSize = 50.sp,
+                 color = Color.White),
+                 fontFamily = FontFamily(Font(R.font.peachcake))
+            )
             Spacer(modifier = Modifier.height(40.dp))
+            Image(painter = painterResource(id = gamePhase), contentDescription = null)
+            Spacer(modifier = Modifier.height(40.dp))
+
+
             repeat(6) {
                 Row() {
 
                     for (i in inici..final) {
                         val tecla = abecedari[i]
-                        var colorBoton by remember { mutableStateOf(Color.DarkGray) }
+                        var colorBoton by remember { mutableStateOf(Color.Transparent) }
                         var botoClicat by remember { mutableStateOf(false) }
                         Box(
                             modifier = Modifier
                                 .size(60.dp)
+                                .padding(6.dp)
                                 .background(colorBoton)
                                 .border(1.dp, Color.Black)
-                                .clip(RoundedCornerShape(8.dp))
                                 .clickable(enabled = !botoClicat) {
                                     for (j in paraulaEscollida.indices) {
                                         if (paraulaEscollida[j] == tecla) {
@@ -107,12 +116,13 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                                     } else {
                                         colorBoton = colorBotoFals
                                         tries++
+                                        errors++
                                         botoClicat = true
                                     }
                                     paraulaSecreta = String(nuevaParaulaSecreta)
                                 }
                         ) {
-                            Text(text = tecla.toString(), textAlign = TextAlign.Center, style = TextStyle(fontSize = 15.sp))
+                            Text(text = tecla.toString(), modifier = Modifier.align(Alignment.Center), style = TextStyle(fontSize = 15.sp))
                         }
                     }
                     inici = final + 1
@@ -123,12 +133,14 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                     }
                 }
             }
-            if (tries == 6) {
-                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
+            Spacer(modifier = Modifier.height(40.dp))
+            Text(text = "Nº de intentos: $tries", fontFamily = FontFamily(Font(R.font.peachcake)))
+            if (errors == 6) {
+                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida))
             }
             if (paraulaSecreta == paraulaEscollida) {
                 victoria = true
-                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
+                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida))
             }
         }
     }

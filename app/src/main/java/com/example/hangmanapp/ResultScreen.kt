@@ -13,15 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.navigation.NavController
 import com.example.hangmanapp.R
 
 @Composable
-fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int) {
+fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int, dificultatEscollida: String) {
 
     var imatgeVictoria = when(victoria) {
-        true -> R.drawable.step6
-        false ->R.drawable.step6
+        true -> R.drawable.step6w
+        false ->R.drawable.step6w
     }
 
     Box(
@@ -37,19 +39,26 @@ fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int) {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            if (victoria) {
-                Text(text = "YOU WIN \nTries: $tries")
-            }
-            else {
-                Text(text = "YOU LOSE",)
-            }
+            verticalArrangement = Arrangement.Center) {
+                Image(
+                    painter = painterResource(id = imatgeVictoria),
+                    contentDescription = null
 
-            Button(onClick = { navController.navigate(Routes.MenuScreen.route) }) {
-                Text(text = "PLAY AGAIN")
+                )
+                if (victoria) {
+                    Text(text = "YOU WIN \nTries: $tries", fontFamily = FontFamily(Font(R.font.peachcake)))
+                }
+                else {
+                    Text(text = "YOU LOSE", fontFamily = FontFamily(Font(R.font.peachcake)))
+                }
+
+                Button(onClick = { navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida)) }) {
+                    Text(text = "PLAY AGAIN", fontFamily = FontFamily(Font(R.font.peachcake)), color = Color.White)
+                }
+                Button(onClick = { navController.navigate(Routes.MenuScreen.route) }) {
+                    Text(text = "MENU", fontFamily = FontFamily(Font(R.font.peachcake)), color = Color.White)
+                }
             }
-        }
         }
 
 }

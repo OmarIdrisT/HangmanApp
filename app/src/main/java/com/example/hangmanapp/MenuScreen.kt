@@ -30,6 +30,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
@@ -59,14 +61,14 @@ fun MenuScreen(navController: NavController) {
                     .width(200.dp),
                 onClick = {(navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida)))}
             ) {
-                Text(text = "Play", style = TextStyle(color = Color.White))
+                Text(text = "Play", fontFamily = FontFamily(Font(R.font.peachcake)),  style = TextStyle(color = Color.White))
             }
             Spacer(modifier = Modifier.height(30.dp))
 
             var help by remember { mutableStateOf(false) }
 
             Button(onClick = { help = true }, modifier = Modifier.width(200.dp)) {
-                Text(text = "Help", style = TextStyle(color = Color.White))
+                Text(text = "Help", fontFamily = FontFamily(Font(R.font.peachcake)), style = TextStyle(color = Color.White))
             }
             MyDialog(help, { help = false }) { help = false }
         }

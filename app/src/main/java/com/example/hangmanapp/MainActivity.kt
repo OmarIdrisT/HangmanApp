@@ -49,12 +49,13 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(
                             Routes.ResultScreen.route,
-                            arguments = listOf(navArgument("victoria") {type = NavType.BoolType}, navArgument("tries") {type = NavType.IntType})
+                            arguments = listOf(navArgument("victoria") {type = NavType.BoolType}, navArgument("tries") {type = NavType.IntType}, navArgument("dificultatEscollida") {type = NavType.StringType})
                         ) {backStackEntry ->
                             ResultScreen(
                                 navigationController,
                                 backStackEntry.arguments?.getBoolean("victoria") ?: false,
-                                backStackEntry.arguments?.getInt("tries") ?: 0
+                                backStackEntry.arguments?.getInt("tries") ?: 0,
+                                backStackEntry.arguments?.getString("dificultatEscollida") ?: "Easy"
                             )
                         }
                     }
