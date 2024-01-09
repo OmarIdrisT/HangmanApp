@@ -1,13 +1,17 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,57 +58,68 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var final = 5
     var abecedari = listOf('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Color.White), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Image(painter = painterResource(id = R.drawable.fondo ), contentDescription = "Fons", modifier = Modifier.fillMaxSize(), contentScale = ContentScale.Crop)
-        Image(painter = painterResource(id = gamePhase), contentDescription = null)
-        var paraulaSecreta by remember { mutableStateOf("_".repeat(paraulaEscollida.length)) }
-        var nuevaParaulaSecreta=paraulaSecreta.toCharArray()
-        Text(text = paraulaSecreta, letterSpacing = 5.sp, style = TextStyle(fontSize = 30.sp, color = Color.Black))
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.fondo),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
+        Column(modifier = Modifier
+            .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center) {
 
-        repeat(6) {
-            Row() {
+            Image(painter = painterResource(id = gamePhase), contentDescription = null)
+            var paraulaSecreta by remember { mutableStateOf("_".repeat(paraulaEscollida.length)) }
+            var nuevaParaulaSecreta=paraulaSecreta.toCharArray()
+            Text(text = paraulaSecreta, letterSpacing = 5.sp, style = TextStyle(fontSize = 50.sp, color = Color.Black))
+            Spacer(modifier = Modifier.height(40.dp))
+            repeat(6) {
+                Row() {
 
-                for (i in inici..final) {
-                    val tecla = abecedari[i]
-                    var colorBoton by remember { mutableStateOf(Color.White) }
-                    Box(
-                        modifier = Modifier
-                            .size(55.dp)
-                            .background(colorBoton)
-                            .clickable {
-                                for (j in paraulaEscollida.indices) {
-                                    if (paraulaEscollida[j] == tecla) {
-                                        colorBoton = Color.Green
-                                        nuevaParaulaSecreta[j] = tecla
-                                    } else {
-                                        colorBoton = Color.Red
-                                        tries++
+                    for (i in inici..final) {
+                        val tecla = abecedari[i]
+                        var colorBoton by remember { mutableStateOf(Color.White) }
+                        Box(
+                            modifier = Modifier
+                                .size(50.dp)
+                                .background(colorBoton)
+                                .border(1.dp, Color.Black)
+                                .clickable {
+                                    for (j in paraulaEscollida.indices) {
+                                        if (paraulaEscollida[j] == tecla) {
+                                            colorBoton = Color.Green
+                                            nuevaParaulaSecreta[j] = tecla
+                                        } else {
+                                            colorBoton = Color.Red
+                                            tries++
+                                        }
                                     }
+                                    paraulaSecreta = String(nuevaParaulaSecreta)
                                 }
-                                paraulaSecreta = String(nuevaParaulaSecreta)
-                            }
-                    ) {
-                        Text(text = tecla.toString(), style = TextStyle(fontSize = 15.sp))
-                      }
-                }
-                inici = final + 1
-                if (final + 5 < abecedari.size - 1) {
-                    final += 6
-                } else {
-                    final = abecedari.lastIndex
+                        ) {
+                            Text(text = tecla.toString(), style = TextStyle(fontSize = 15.sp))
+                        }
+                    }
+                    inici = final + 1
+                    if (final + 5 < abecedari.size - 1) {
+                        final += 6
+                    } else {
+                        final = abecedari.lastIndex
+                    }
                 }
             }
-        }
-        if (tries == 6) {
-            navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
-        }
-        else if (paraulaSecreta == paraulaEscollida) {
-            victoria = true
-            navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
+            if (tries == 6) {
+                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
+            }
+            if (paraulaSecreta == paraulaEscollida) {
+                victoria = true
+                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries))
+            }
         }
     }
+
 }
 
 

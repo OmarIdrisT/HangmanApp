@@ -3,6 +3,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -15,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -24,15 +26,32 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun Splash(alphaAnim: Float) {
-    Column(modifier = Modifier.fillMaxSize().background(color = Color.DarkGray),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Image(painter = painterResource(id = R.drawable.fondo ), contentDescription = "Fons", modifier = Modifier.fillMaxSize())
-        Image(painter = painterResource(id = R.drawable.logo),
-            contentDescription = "logo", alpha = alphaAnim
+        Image(
+            painter = painterResource(id = R.drawable.fondo),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
         )
-        Text(text = "Welcome!", fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "logo",
+                alpha = alphaAnim
+            )
+            Text(
+                text = "Welcome!",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
     }
 }
 

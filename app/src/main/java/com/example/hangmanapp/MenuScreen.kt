@@ -3,6 +3,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -35,35 +37,41 @@ import com.example.hangmanapp.R
 
 @Composable
 fun MenuScreen(navController: NavController) {
-
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.DarkGray),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Image(painter = painterResource(id = R.drawable.fondo ), contentDescription = "Fons", modifier = Modifier.fillMaxSize())
-        Image(painter = painterResource(id = R.drawable.logo), contentDescription = "portada", modifier = Modifier.size(200.dp))
-        Spacer(modifier = Modifier.height(30.dp))
-        val dificultatEscollida = myDropDownMenu()
-        Spacer(modifier = Modifier.height(30.dp))
-        Button(
+    Box (modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(id = R.drawable.fondo),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds
+        )
+        Column (
             modifier = Modifier
-                .width(200.dp),
-            onClick = {(navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida)))}
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
+            Image(painter = painterResource(id = R.drawable.logo), contentDescription = "portada", modifier = Modifier.size(200.dp))
+            Spacer(modifier = Modifier.height(30.dp))
+            val dificultatEscollida = myDropDownMenu()
+            Spacer(modifier = Modifier.height(30.dp))
+            Button(
+                modifier = Modifier
+                    .width(200.dp),
+                onClick = {(navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida)))}
+            ) {
                 Text(text = "Play", style = TextStyle(color = Color.White))
-        }
-        Spacer(modifier = Modifier.height(30.dp))
+            }
+            Spacer(modifier = Modifier.height(30.dp))
 
-        var help by remember { mutableStateOf(false) }
+            var help by remember { mutableStateOf(false) }
 
-        Button(onClick = { help = true }, modifier = Modifier.width(200.dp)) {
+            Button(onClick = { help = true }, modifier = Modifier.width(200.dp)) {
                 Text(text = "Help", style = TextStyle(color = Color.White))
+            }
+            MyDialog(help, { help = false }) { help = false }
         }
-        MyDialog(help, { help = false }) { help = false }
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
