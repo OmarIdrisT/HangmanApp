@@ -9,9 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,14 +19,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.hangmanapp.R
+
+
+var colorBotoEncert = Color(0xff0db121)
+val colorBotoFals = Color(0xffd32c2c)
 
 @Composable
 fun GameScreen(navController: NavController, dificultatEscollida : String) {
@@ -81,13 +86,15 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
 
                     for (i in inici..final) {
                         val tecla = abecedari[i]
-                        var colorBoton by remember { mutableStateOf(Color.White) }
+                        var colorBoton by remember { mutableStateOf(Color.DarkGray) }
+                        var botoClicat by remember { mutableStateOf(false) }
                         Box(
                             modifier = Modifier
-                                .size(50.dp)
+                                .size(60.dp)
                                 .background(colorBoton)
                                 .border(1.dp, Color.Black)
-                                .clickable {
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable(enabled = !botoClicat) {
                                     for (j in paraulaEscollida.indices) {
                                         if (paraulaEscollida[j] == tecla) {
                                             nuevaParaulaSecreta[j] = tecla
@@ -95,16 +102,17 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                                         }
                                     }
                                     if (lletraValida) {
-                                        colorBoton = Color.Green
-                                    }
-                                    else {
-                                        colorBoton = Color.Red
+                                        colorBoton = colorBotoEncert
+                                        botoClicat = true
+                                    } else {
+                                        colorBoton = colorBotoFals
                                         tries++
+                                        botoClicat = true
                                     }
                                     paraulaSecreta = String(nuevaParaulaSecreta)
                                 }
                         ) {
-                            Text(text = tecla.toString(), style = TextStyle(fontSize = 15.sp))
+                            Text(text = tecla.toString(), textAlign = TextAlign.Center, style = TextStyle(fontSize = 15.sp))
                         }
                     }
                     inici = final + 1

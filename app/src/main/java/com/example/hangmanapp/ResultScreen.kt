@@ -1,7 +1,9 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -17,6 +19,11 @@ import com.example.hangmanapp.R
 @Composable
 fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int) {
 
+    var imatgeVictoria = when(victoria) {
+        true -> R.drawable.step6
+        false ->R.drawable.step6
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -27,22 +34,22 @@ fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int) {
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.FillBounds
         )
-        if (victoria) {
-            Text(
-                text = "YOU WIN \nTries: $tries",
-                modifier = Modifier
-                    .align(Alignment.Center)
-            )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            if (victoria) {
+                Text(text = "YOU WIN \nTries: $tries")
+            }
+            else {
+                Text(text = "YOU LOSE",)
+            }
+
+            Button(onClick = { navController.navigate(Routes.MenuScreen.route) }) {
+                Text(text = "PLAY AGAIN")
+            }
         }
-        else {
-            Text(
-                text = "YOU LOSE",
-                modifier = Modifier
-                    .align(Alignment.Center))
         }
 
-        Button(onClick = { navController.navigate(Routes.MenuScreen.route) }) {
-            Text(text = "PLAY AGAIN")
-        }
-    }
 }
