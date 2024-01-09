@@ -56,6 +56,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var paraulaEscollida by remember { mutableStateOf(palabrasJugando[paraulaRandom]) }
     var inici = 0
     var final = 5
+    var lletraValida = false
     var abecedari = listOf('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -89,12 +90,16 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                                 .clickable {
                                     for (j in paraulaEscollida.indices) {
                                         if (paraulaEscollida[j] == tecla) {
-                                            colorBoton = Color.Green
                                             nuevaParaulaSecreta[j] = tecla
-                                        } else {
-                                            colorBoton = Color.Red
-                                            tries++
+                                            lletraValida = true
                                         }
+                                    }
+                                    if (lletraValida) {
+                                        colorBoton = Color.Green
+                                    }
+                                    else {
+                                        colorBoton = Color.Red
+                                        tries++
                                     }
                                     paraulaSecreta = String(nuevaParaulaSecreta)
                                 }
