@@ -115,10 +115,10 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                                         botoClicat = true
                                     } else {
                                         colorBoton = colorBotoFals
-                                        tries++
                                         errors++
                                         botoClicat = true
                                     }
+                                    tries++
                                     paraulaSecreta = String(nuevaParaulaSecreta)
                                 }
                         ) {
