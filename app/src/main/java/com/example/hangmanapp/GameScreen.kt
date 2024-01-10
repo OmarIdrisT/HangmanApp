@@ -1,3 +1,4 @@
+import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -33,7 +35,6 @@ import com.example.hangmanapp.R
 
 val colorBotoEncert = Color(0xff0db121)
 val colorBotoFals = Color(0xffd32c2c)
-val colorPredeterminat = Color(0xff2f9ac5)
 
 @Composable
 fun GameScreen(navController: NavController, dificultatEscollida : String) {
@@ -49,6 +50,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
         5 -> R.drawable.step5w
         else -> R.drawable.step6w
     }
+    var sonidoVictoria = MediaPlayer.create(LocalContext.current,R.raw.win)
 
     var paraulesEasy = listOf("ROSA","HIELO", "LUZ", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
     var paraulesMedium = listOf("HOME", "WORD1", "WORD2", "WORD3", "WORD4", "WORD5", "WORD6", "WORD7", "ATLANTIS", "LUGUBRE")
@@ -103,7 +105,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                                 .padding(6.dp)
                                 .background(colorBoton)
                                 .border(1.dp, Color.Black)
-                                .clickable(enabled = !botoClicat) {
+                                .clickable(enabled = !botoClicat && paraulaSecreta != paraulaEscollida && errors < 6) {
                                     for (j in paraulaEscollida.indices) {
                                         if (paraulaEscollida[j] == tecla) {
                                             nuevaParaulaSecreta[j] = tecla
@@ -135,13 +137,15 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
             }
             Spacer(modifier = Modifier.height(40.dp))
             Text(text = "Nº de intentos: $tries", fontFamily = FontFamily(Font(R.font.peachcake)))
-            if (errors == 6) {
-                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida))
-            }
             if (paraulaSecreta == paraulaEscollida) {
                 victoria = true
+                sonidoVictoria.start()
                 navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida))
             }
+            else if (errors == 6) {
+                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida))
+            }
+
         }
     }
 

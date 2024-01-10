@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,7 +33,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.hangmanapp.R
@@ -56,19 +59,27 @@ fun MenuScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(30.dp))
             val dificultatEscollida = myDropDownMenu()
             Spacer(modifier = Modifier.height(30.dp))
-            Button(
-                modifier = Modifier
-                    .width(200.dp),
-                onClick = {(navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida)))}
+            Box(modifier = Modifier
+                .width(130.dp)
+                .clickable { (navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida))) }
+                .background(Color.DarkGray)
+                .height(60.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Text(text = "Play", fontFamily = FontFamily(Font(R.font.peachcake)),  style = TextStyle(color = Color.White))
+                Text(text = "PLAY", fontFamily = FontFamily(Font(R.font.peachcake)),  style = TextStyle(color = Color.White, fontSize = 30.sp))
             }
             Spacer(modifier = Modifier.height(30.dp))
 
             var help by remember { mutableStateOf(false) }
 
-            Button(onClick = { help = true }, modifier = Modifier.width(200.dp)) {
-                Text(text = "Help", fontFamily = FontFamily(Font(R.font.peachcake)), style = TextStyle(color = Color.White))
+            Box(modifier = Modifier
+                    .width(130.dp)
+                    .clickable { help = true }
+                    .background(Color.DarkGray)
+                    .height(60.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "HELP", fontFamily = FontFamily(Font(R.font.peachcake)), style = TextStyle(color = Color.White, fontSize = 30.sp), modifier = Modifier.align(Alignment.Center))
             }
             MyDialog(help, { help = false }) { help = false }
         }
@@ -89,12 +100,13 @@ fun myDropDownMenu(): String {
             onValueChange = { dificultatGame = it },
             enabled = false,
             readOnly = true,
-            colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.Red),
+            colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.White),
             modifier = Modifier
                 .clickable { expanded = true }
                 .width(200.dp)
-                .background(color = Color.White)
+                .background(color = Color.DarkGray)
                 .border(1.dp, Color.Black)
+                .align(alignment = CenterHorizontally)
         )
 
         DropdownMenu(
@@ -102,7 +114,7 @@ fun myDropDownMenu(): String {
             onDismissRequest = { expanded = false },
         ) {
             opcions.forEach { dificultat ->
-                DropdownMenuItem(modifier = Modifier.background(color = Color.White) ,text = { Text(text = dificultat, style = TextStyle(color = Color.Blue)) }, onClick = {
+                DropdownMenuItem(modifier = Modifier.background(color = Color.DarkGray) ,text = { Text(text = dificultat, style = TextStyle(color = Color.White)) }, onClick = {
                     expanded = false
                     dificultatGame = dificultat
                 })
