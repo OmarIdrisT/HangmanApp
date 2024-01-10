@@ -31,8 +31,8 @@ import com.example.hangmanapp.R
 fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int, dificultatEscollida: String) {
 
     var imatgeVictoria = when(victoria) {
-        true -> R.drawable.win2
-        false ->R.drawable.gameover3
+        true -> R.drawable.victory
+        false ->R.drawable.lose
     }
 
     Box(
@@ -51,17 +51,18 @@ fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int, di
             verticalArrangement = Arrangement.Center) {
                 Image(
                     painter = painterResource(id = imatgeVictoria),
-                    modifier = Modifier.height(200.dp).width(500.dp),
+                    modifier = Modifier.size(200.dp),
                     contentDescription = null
 
                 )
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(20.dp))
                 if (victoria) {
-                    Text(text = "YOU WIN \nTries: $tries", fontFamily = FontFamily(Font(R.font.peachcake)))
+                    Text(text = "YOU WIN", fontFamily = FontFamily(Font(R.font.peachcake)), style = TextStyle(color = Color.White, fontSize = 50.sp))
                 }
                 else {
-                    Text(text = "YOU LOSE", fontFamily = FontFamily(Font(R.font.peachcake)))
+                    Text(text = "YOU FAILED", fontFamily = FontFamily(Font(R.font.peachcake)), style = TextStyle(color = Color.White, fontSize = 50.sp))
                 }
+            Text(text = "Tries: $tries", fontFamily = FontFamily(Font(R.font.peachcake)), style = TextStyle(color = Color.White, fontSize = 30.sp))
                 Spacer(modifier = Modifier.height(40.dp))
                 Box(modifier = Modifier
                     .width(130.dp)

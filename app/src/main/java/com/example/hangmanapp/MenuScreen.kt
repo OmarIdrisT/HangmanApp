@@ -1,3 +1,4 @@
+import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -42,6 +44,14 @@ import com.example.hangmanapp.R
 
 @Composable
 fun MenuScreen(navController: NavController) {
+    var musicaOn = true
+    var musica = MediaPlayer.create(LocalContext.current,R.raw.win)
+    if (musicaOn) {
+        musica.start()
+    }
+    else {
+        musica.stop()
+    }
     Box (modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.fondo),
@@ -61,27 +71,50 @@ fun MenuScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(30.dp))
             Box(modifier = Modifier
                 .width(130.dp)
-                .clickable { (navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida))) }
+                .clickable {
+                    (navController.navigate(
+                        Routes.GameScreen.createRoute(
+                            dificultatEscollida
+                        )
+                    ))
+                }
                 .background(Color.DarkGray)
                 .height(60.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(text = "PLAY", fontFamily = FontFamily(Font(R.font.peachcake)),  style = TextStyle(color = Color.White, fontSize = 30.sp))
             }
+
             Spacer(modifier = Modifier.height(30.dp))
 
             var help by remember { mutableStateOf(false) }
 
             Box(modifier = Modifier
-                    .width(130.dp)
-                    .clickable { help = true }
-                    .background(Color.DarkGray)
-                    .height(60.dp),
+                .width(130.dp)
+                .clickable { help = true }
+                .background(Color.DarkGray)
+                .height(60.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(text = "HELP", fontFamily = FontFamily(Font(R.font.peachcake)), style = TextStyle(color = Color.White, fontSize = 30.sp), modifier = Modifier.align(Alignment.Center))
             }
             MyDialog(help, { help = false }) { help = false }
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Box(modifier = Modifier
+                .width(50.dp)
+                .clickable { musicaOn = false }
+                .background(Color.DarkGray)
+                .height(50.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.soundicon),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
         }
     }
 

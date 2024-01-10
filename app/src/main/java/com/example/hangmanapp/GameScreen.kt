@@ -41,7 +41,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
 
     var tries by remember { mutableStateOf(0) }
     var errors by remember { mutableStateOf(0) }
-    var gamePhase = when(errors) {
+    var faseJoc = when(errors) {
         0 -> R.drawable.step0w
         1 -> R.drawable.step1w
         2 -> R.drawable.step2w
@@ -50,23 +50,25 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
         5 -> R.drawable.step5w
         else -> R.drawable.step6w
     }
-    var sonidoVictoria = MediaPlayer.create(LocalContext.current,R.raw.win)
 
-    var paraulesEasy = listOf("ROSA","HIELO", "LUZ", "ROCK", "ROLL", "MEAT", "KICK", "BEAT", "SHIP", "DRIP")
-    var paraulesMedium = listOf("HOME", "WORD1", "WORD2", "WORD3", "WORD4", "WORD5", "WORD6", "WORD7", "ATLANTIS", "LUGUBRE")
-    var paraulesHard = listOf("APOCALIPSIS", "LICANTROPO", "PERIPECIA", "PAUPERRIMO", "LOGARITMO", "CONOCIMIENTO", "ATARAXIA", "TURBULENCIA", "MURCIELAGO", "ATLANTIS")
+
+    var paraulesEasy = listOf("ROSA","HIELO", "LUZ", "ARCO", "ALMA", "CIELO", "YUGO", "ZARZA", "FLOTA", "BORO")
+    var paraulesNormal = listOf("LLUVIA", "CASTILLO", "CADMIO", "AVERSION", "SARDINA", "PLANETA", "ODISEA", "AÑEJO", "ATLANTIS", "LUGUBRE")
+    var paraulesHard = listOf("ZARIGUEYA", "PATIDIFUSO", "PERIPECIA", "PAUPERRIMO", "DEGRADACION", "CONOCIMIENTO", "ATARAXIA", "TURBULENCIA", "MURCIELAGO", "COSMOLOGIA")
     var palabrasJugando =when(dificultatEscollida){
         "Easy"->paraulesEasy
-        "Normal"->paraulesMedium
+        "Normal"->paraulesNormal
         else->paraulesHard
     }
-    var victoria=false
+
     var paraulaRandom by remember { mutableStateOf((palabrasJugando.indices).random())  }
     var paraulaEscollida by remember { mutableStateOf(palabrasJugando[paraulaRandom]) }
     var inici = 0
     var final = 5
     var lletraValida = false
     var abecedari = listOf('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
+    var victoria=false
+    var soVictoria = MediaPlayer.create(LocalContext.current,R.raw.win)
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -80,7 +82,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
             var paraulaSecreta by remember { mutableStateOf("_".repeat(paraulaEscollida.length)) }
-            var nuevaParaulaSecreta=paraulaSecreta.toCharArray()
+            val novaParaulaSecreta=paraulaSecreta.toCharArray()
             Text(text = paraulaSecreta,
                  letterSpacing = 5.sp,
                  style = TextStyle(fontSize = 50.sp,
@@ -88,7 +90,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                  fontFamily = FontFamily(Font(R.font.peachcake))
             )
             Spacer(modifier = Modifier.height(40.dp))
-            Image(painter = painterResource(id = gamePhase), contentDescription = null)
+            Image(painter = painterResource(id = faseJoc), contentDescription = null)
             Spacer(modifier = Modifier.height(40.dp))
 
 
@@ -97,31 +99,31 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
 
                     for (i in inici..final) {
                         val tecla = abecedari[i]
-                        var colorBoton by remember { mutableStateOf(Color.Transparent) }
+                        var colorBoto by remember { mutableStateOf(Color.Transparent) }
                         var botoClicat by remember { mutableStateOf(false) }
                         Box(
                             modifier = Modifier
                                 .size(60.dp)
                                 .padding(6.dp)
-                                .background(colorBoton)
+                                .background(colorBoto)
                                 .border(1.dp, Color.Black)
                                 .clickable(enabled = !botoClicat && paraulaSecreta != paraulaEscollida && errors < 6) {
                                     for (j in paraulaEscollida.indices) {
                                         if (paraulaEscollida[j] == tecla) {
-                                            nuevaParaulaSecreta[j] = tecla
+                                            novaParaulaSecreta[j] = tecla
                                             lletraValida = true
                                         }
                                     }
                                     if (lletraValida) {
-                                        colorBoton = colorBotoEncert
+                                        colorBoto = colorBotoEncert
                                         botoClicat = true
                                     } else {
-                                        colorBoton = colorBotoFals
+                                        colorBoto = colorBotoFals
                                         errors++
                                         botoClicat = true
                                     }
                                     tries++
-                                    paraulaSecreta = String(nuevaParaulaSecreta)
+                                    paraulaSecreta = String(novaParaulaSecreta)
                                 }
                         ) {
                             Text(text = tecla.toString(), modifier = Modifier.align(Alignment.Center), style = TextStyle(fontSize = 15.sp))
@@ -136,10 +138,10 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                 }
             }
             Spacer(modifier = Modifier.height(40.dp))
-            Text(text = "Nº de intentos: $tries", fontFamily = FontFamily(Font(R.font.peachcake)))
+            Text(text = "Tries: $tries", fontFamily = FontFamily(Font(R.font.peachcake)))
             if (paraulaSecreta == paraulaEscollida) {
                 victoria = true
-                sonidoVictoria.start()
+                soVictoria.start()
                 navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida))
             }
             else if (errors == 6) {
