@@ -68,7 +68,8 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var lletraValida = false
     var abecedari = listOf('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
     var victoria=false
-    var soVictoria = MediaPlayer.create(LocalContext.current,R.raw.win)
+    var soVictoria = MediaPlayer.create(LocalContext.current,R.raw.victorysound)
+    var soDerrota = MediaPlayer.create(LocalContext.current,R.raw.defeatsound)
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -146,6 +147,7 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
             }
             else if (errors == 6) {
                 navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida))
+                soDerrota.start()
             }
 
         }

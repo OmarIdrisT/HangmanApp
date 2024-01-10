@@ -45,13 +45,20 @@ import com.example.hangmanapp.R
 @Composable
 fun MenuScreen(navController: NavController) {
     var musicaOn = true
-    var musica = MediaPlayer.create(LocalContext.current,R.raw.win)
+    var musica = MediaPlayer.create(LocalContext.current,R.raw.ost)
+    var audioIcon = when {
+        musicaOn -> R.drawable.soon
+        else -> R.drawable.sooff
+    }
     if (musicaOn) {
         musica.start()
+        musica.isLooping = true
     }
     else {
         musica.stop()
+        musica.release()
     }
+
     Box (modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.fondo),
@@ -110,7 +117,7 @@ fun MenuScreen(navController: NavController) {
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.soundicon),
+                    painter = painterResource(id = audioIcon),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
@@ -167,7 +174,11 @@ fun MyDialog(help: Boolean, onDismiss: () -> Unit, function: () -> Unit){
                     .background(Color.White)
                     .padding(24.dp)
                     .fillMaxWidth()) {
-                Text(text = "This is my dialog", color = Color.Black)
+                Text(text = """"Choose one of our difficulty options: Easy, Normal and Hard.
+                    You will have to identify the hidden word with less than 6 mistakes.
+                    Each time you click on a button, it will change its color, becoming green if
+                    the letter belongs to the hidden word, or red if does not.
+                """.trimMargin(), color = Color.Black)
             }
         }
     }
