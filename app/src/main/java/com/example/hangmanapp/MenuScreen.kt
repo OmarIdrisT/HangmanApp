@@ -44,7 +44,7 @@ import com.example.hangmanapp.R
 
 @Composable
 fun MenuScreen(navController: NavController) {
-    var musicaOn = true
+    var musicaOn by remember { mutableStateOf(true) }
     var musica = MediaPlayer.create(LocalContext.current,R.raw.ost)
     var audioIcon = when {
         musicaOn -> R.drawable.soon
