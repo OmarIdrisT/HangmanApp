@@ -51,6 +51,7 @@ fun MenuScreen(navController: NavController) {
         else -> R.drawable.sooff
     }
     if (musicaOn) {
+        musica.setVolume(0.8f,0.8f)
         musica.start()
         musica.isLooping = true
     }
