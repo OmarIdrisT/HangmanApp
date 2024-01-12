@@ -1,7 +1,8 @@
+package com.example.hangmanapp
+
 import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,12 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import com.example.hangmanapp.R
 
 @Composable
 fun MenuScreen(navController: NavController) {
     var musicaOn by remember { mutableStateOf(true) }
-    var musica = MediaPlayer.create(LocalContext.current,R.raw.ost)
+    val musica = MediaPlayer.create(LocalContext.current,R.raw.ost)
     var audioIcon = when {
         musicaOn -> R.drawable.soundon
         else -> R.drawable.soundoff
@@ -83,7 +83,8 @@ fun MenuScreen(navController: NavController) {
             Box(modifier = Modifier
                 .width(130.dp)
                 .clickable {
-                    (navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida, musicaOn)
+                    (navController.navigate(
+                        Routes.GameScreen.createRoute(dificultatEscollida, musicaOn)
                     ))
                 }
                 .background(Color.DarkGray)

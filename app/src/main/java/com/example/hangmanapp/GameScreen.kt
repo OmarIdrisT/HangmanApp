@@ -1,3 +1,5 @@
+package com.example.hangmanapp
+
 import android.media.MediaPlayer
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,7 +32,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.hangmanapp.R
 
 
 val colorBotoEncert = Color(0xff0db121)
@@ -52,10 +53,10 @@ fun GameScreen(navController: NavController, dificultatEscollida : String, music
     }
 
 
-    var paraulesEasy = listOf("ROSA","HIELO", "LUZ", "ARCO", "ALMA", "CIELO", "YUGO", "ZARZA", "FLOTA", "BORO")
-    var paraulesNormal = listOf("LLUVIA", "CASTILLO", "CADMIO", "AVERSION", "SARDINA", "PLANETA", "ODISEA", "AÑEJO", "ATLANTIS", "LUGUBRE")
-    var paraulesHard = listOf("ZARIGUEYA", "PATIDIFUSO", "PERIPECIA", "PAUPERRIMO", "DEGRADACION", "CONOCIMIENTO", "ATARAXIA", "TURBULENCIA", "MURCIELAGO", "COSMOLOGIA")
-    var palabrasJugando =when(dificultatEscollida){
+    val paraulesEasy = listOf("ROSA","HIELO", "LUZ", "ARCO", "ALMA", "CIELO", "YUGO", "ZARZA", "FLOTA", "BORO")
+    val paraulesNormal = listOf("LLUVIA", "CASTILLO", "CADMIO", "AVERSION", "SARDINA", "PLANETA", "ODISEA", "AÑEJO", "ATLANTIS", "LUGUBRE")
+    val paraulesHard = listOf("ZARIGUEYA", "PATIDIFUSO", "PERIPECIA", "PAUPERRIMO", "DEGRADACION", "CONOCIMIENTO", "ATARAXIA", "TURBULENCIA", "MURCIELAGO", "COSMOLOGIA")
+    val palabrasJugando =when(dificultatEscollida){
         "EASY"->paraulesEasy
         "NORMAL"->paraulesNormal
         else->paraulesHard
@@ -150,14 +151,28 @@ fun GameScreen(navController: NavController, dificultatEscollida : String, music
                     soVictoria.start()
                     soVictoriaIsPlaying = true
                 }
-                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida, musicaOn))
+                navController.navigate(
+                    Routes.ResultScreen.createRoute(
+                        victoria,
+                        tries,
+                        dificultatEscollida,
+                        musicaOn
+                    )
+                )
             }
             else if (errors == 6) {
                 if (!soDerrotaIsPlaying) {
                     soDerrota.start()
                     soDerrotaIsPlaying = true
                 }
-                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida, musicaOn))
+                navController.navigate(
+                    Routes.ResultScreen.createRoute(
+                        victoria,
+                        tries,
+                        dificultatEscollida,
+                        musicaOn
+                    )
+                )
 
             }
 
