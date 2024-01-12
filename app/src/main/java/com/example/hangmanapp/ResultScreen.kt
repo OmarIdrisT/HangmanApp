@@ -24,8 +24,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.hangmanapp.R
-import com.example.hangmanapp.Routes
 
 @Composable
 fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int, dificultatEscollida: String, musicaOn: Boolean) {
