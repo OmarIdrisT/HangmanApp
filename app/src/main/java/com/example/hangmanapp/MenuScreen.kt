@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -140,7 +141,7 @@ fun myDropDownMenu(): String {
             onValueChange = { dificultatGame = it },
             enabled = false,
             readOnly = true,
-            textStyle = TextStyle(color = Color.White, fontFamily = FontFamily(Font(R.font.peachcake)), fontSize = 30.sp),
+            textStyle = TextStyle(color = Color.White, fontFamily = FontFamily(Font(R.font.peachcake)), fontSize = 30.sp, textAlign = TextAlign.Center),
             modifier = Modifier
                 .clickable { expanded = true }
                 .width(200.dp)
