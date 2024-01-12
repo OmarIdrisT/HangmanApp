@@ -37,7 +37,7 @@ val colorBotoEncert = Color(0xff0db121)
 val colorBotoFals = Color(0xffd32c2c)
 
 @Composable
-fun GameScreen(navController: NavController, dificultatEscollida : String) {
+fun GameScreen(navController: NavController, dificultatEscollida : String, musicaOn: Boolean) {
 
     var tries by remember { mutableStateOf(0) }
     var errors by remember { mutableStateOf(0) }
@@ -56,8 +56,8 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var paraulesNormal = listOf("LLUVIA", "CASTILLO", "CADMIO", "AVERSION", "SARDINA", "PLANETA", "ODISEA", "AÑEJO", "ATLANTIS", "LUGUBRE")
     var paraulesHard = listOf("ZARIGUEYA", "PATIDIFUSO", "PERIPECIA", "PAUPERRIMO", "DEGRADACION", "CONOCIMIENTO", "ATARAXIA", "TURBULENCIA", "MURCIELAGO", "COSMOLOGIA")
     var palabrasJugando =when(dificultatEscollida){
-        "Easy"->paraulesEasy
-        "Normal"->paraulesNormal
+        "EASY"->paraulesEasy
+        "NORMAL"->paraulesNormal
         else->paraulesHard
     }
 
@@ -68,8 +68,12 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
     var lletraValida = false
     var abecedari = listOf('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
     var victoria=false
+    var soVictoriaIsPlaying by remember { mutableStateOf(false) }
+    var soDerrotaIsPlaying by remember { mutableStateOf(false) }
     var soVictoria = MediaPlayer.create(LocalContext.current,R.raw.victorysound)
     var soDerrota = MediaPlayer.create(LocalContext.current,R.raw.defeatsound)
+
+
 
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -139,15 +143,22 @@ fun GameScreen(navController: NavController, dificultatEscollida : String) {
                 }
             }
             Spacer(modifier = Modifier.height(40.dp))
-            Text(text = "Tries: $tries", fontFamily = FontFamily(Font(R.font.peachcake)))
+            Text(text = "TRIES: $tries", fontFamily = FontFamily(Font(R.font.peachcake)), style = TextStyle(fontSize = 40.sp))
             if (paraulaSecreta == paraulaEscollida) {
                 victoria = true
-                soVictoria.start()
-                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida))
+                if (!soVictoriaIsPlaying) {
+                    soVictoria.start()
+                    soVictoriaIsPlaying = true
+                }
+                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida, musicaOn))
             }
             else if (errors == 6) {
-                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida))
-                soDerrota.start()
+                if (!soDerrotaIsPlaying) {
+                    soDerrota.start()
+                    soDerrotaIsPlaying = true
+                }
+                navController.navigate(Routes.ResultScreen.createRoute(victoria, tries, dificultatEscollida, musicaOn))
+
             }
 
         }

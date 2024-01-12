@@ -13,14 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,7 +34,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -47,17 +45,21 @@ fun MenuScreen(navController: NavController) {
     var musicaOn by remember { mutableStateOf(true) }
     var musica = MediaPlayer.create(LocalContext.current,R.raw.ost)
     var audioIcon = when {
-        musicaOn -> R.drawable.soon
-        else -> R.drawable.sooff
+        musicaOn -> R.drawable.soundon
+        else -> R.drawable.soundoff
     }
-    if (musicaOn) {
-        musica.setVolume(0.8f,0.8f)
-        musica.start()
-        musica.isLooping = true
-    }
-    else {
-        musica.stop()
-        musica.release()
+    LaunchedEffect(musicaOn) {
+        if (musicaOn) {
+            musica.setVolume(0.0f,0.0f)
+            musica.reset()
+            musica.start()
+            musica.isLooping = true
+        }
+        else {
+            musica.setVolume(0f, 0f)
+            musica.stop()
+        }
+
     }
 
     Box (modifier = Modifier.fillMaxSize()) {
@@ -80,10 +82,7 @@ fun MenuScreen(navController: NavController) {
             Box(modifier = Modifier
                 .width(130.dp)
                 .clickable {
-                    (navController.navigate(
-                        Routes.GameScreen.createRoute(
-                            dificultatEscollida
-                        )
+                    (navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida, musicaOn)
                     ))
                 }
                 .background(Color.DarkGray)
@@ -112,15 +111,15 @@ fun MenuScreen(navController: NavController) {
 
             Box(modifier = Modifier
                 .width(50.dp)
-                .clickable { musicaOn = false }
-                .background(Color.DarkGray)
+                .clickable { musicaOn = !musicaOn }
+                .background(Color.Transparent)
                 .height(50.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
                     painter = painterResource(id = audioIcon),
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(100.dp)
                 )
             }
         }
@@ -131,9 +130,9 @@ fun MenuScreen(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun myDropDownMenu(): String {
-    var dificultatGame by remember { mutableStateOf("Easy") }
+    var dificultatGame by remember { mutableStateOf("EASY") }
     var expanded by remember { mutableStateOf(false) }
-    val opcions = listOf("Easy", "Normal", "Hard")
+    val opcions = listOf("EASY", "NORMAL", "HARD")
 
     Column (modifier = Modifier.padding(20.dp)) {
         OutlinedTextField(
@@ -141,12 +140,11 @@ fun myDropDownMenu(): String {
             onValueChange = { dificultatGame = it },
             enabled = false,
             readOnly = true,
-            colors = TextFieldDefaults.outlinedTextFieldColors(textColor = Color.White),
+            textStyle = TextStyle(color = Color.White, fontFamily = FontFamily(Font(R.font.peachcake)), fontSize = 30.sp),
             modifier = Modifier
                 .clickable { expanded = true }
                 .width(200.dp)
                 .background(color = Color.DarkGray)
-                .border(1.dp, Color.Black)
                 .align(alignment = CenterHorizontally)
         )
 
@@ -155,7 +153,7 @@ fun myDropDownMenu(): String {
             onDismissRequest = { expanded = false },
         ) {
             opcions.forEach { dificultat ->
-                DropdownMenuItem(modifier = Modifier.background(color = Color.DarkGray) ,text = { Text(text = dificultat, style = TextStyle(color = Color.White)) }, onClick = {
+                DropdownMenuItem(modifier = Modifier.background(color = Color.DarkGray) ,text = { Text(text = dificultat, style = TextStyle(color = Color.White, fontFamily = FontFamily(Font(R.font.peachcake)))) }, onClick = {
                     expanded = false
                     dificultatGame = dificultat
                 })
@@ -175,13 +173,10 @@ fun MyDialog(help: Boolean, onDismiss: () -> Unit, function: () -> Unit){
                     .background(Color.White)
                     .padding(24.dp)
                     .fillMaxWidth()) {
-                Text(text = """"Choose one of our difficulty options: Easy, Normal and Hard.
-                    You will have to identify the hidden word with less than 6 mistakes.
-                    Each time you click on a button, it will change its color, becoming green if
-                    the letter belongs to the hidden word, or red if does not.
-                """.trimMargin(), color = Color.Black)
+                Text(text = "-Choose one of our difficulty options: Easy, Normal and Hard. -You will have to identify the hidden word with less than 6 mistakes.\n-Each time you click on a button, it will change its color, becoming green if the letter belongs to the hidden word, or red if does not.",color = Color.Black)
             }
         }
     }
 }
+
 

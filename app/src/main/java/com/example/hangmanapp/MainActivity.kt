@@ -44,7 +44,8 @@ class MainActivity : ComponentActivity() {
                         ) { backStackEntry ->
                             GameScreen(
                                 navigationController,
-                                backStackEntry.arguments?.getString("dificultatEscollida") ?: "Easy"
+                                backStackEntry.arguments?.getString("dificultatEscollida") ?: "EASY",
+                                backStackEntry.arguments?.getBoolean("musicaOn") ?: true
                             )
                         }
                         composable(
@@ -55,7 +56,8 @@ class MainActivity : ComponentActivity() {
                                 navigationController,
                                 backStackEntry.arguments?.getBoolean("victoria") ?: false,
                                 backStackEntry.arguments?.getInt("tries") ?: 0,
-                                backStackEntry.arguments?.getString("dificultatEscollida") ?: "Easy"
+                                backStackEntry.arguments?.getString("dificultatEscollida") ?: "Easy",
+                                backStackEntry.arguments?.getBoolean("musicaOn") ?: true
                             )
                         }
                     }

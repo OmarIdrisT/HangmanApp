@@ -28,7 +28,7 @@ import androidx.navigation.NavController
 import com.example.hangmanapp.R
 
 @Composable
-fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int, dificultatEscollida: String) {
+fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int, dificultatEscollida: String, musicaOn: Boolean) {
 
     var imatgeVictoria = when(victoria) {
         true -> R.drawable.victory
@@ -66,7 +66,7 @@ fun ResultScreen(navController: NavController, victoria: Boolean, tries: Int, di
                 Spacer(modifier = Modifier.height(40.dp))
                 Box(modifier = Modifier
                     .width(130.dp)
-                    .clickable { navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida)) }
+                    .clickable { navController.navigate(Routes.GameScreen.createRoute(dificultatEscollida, musicaOn)) }
                     .background(Color.DarkGray)
                     .height(60.dp),
                     contentAlignment = Alignment.Center
